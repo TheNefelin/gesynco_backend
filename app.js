@@ -49,18 +49,6 @@ async function connectDatabase() {
 // Conectar a la base de datos al iniciar
 connectDatabase();
 
-
-// app.listen(PORT, async () => {
-//     console.log(`LOCAL - Escuchando puerto ${PORT}`);
-//     try {
-//         await sequelize.authenticate();
-//         console.log('Conexión a la base de datos exitosa');
-//     } catch (error) {
-//         console.log('Error al conectar a la base de datos:', error);
-//         // console.log('Error al conectar a la base de datos');
-//     }
-// })
-
 app.get('/', (req, res) => {
     res.send({
         message: 'Servidor Express con Sequelize está corriendo 🚀',
@@ -74,5 +62,9 @@ app.get('/', (req, res) => {
         database: isDatabaseConnected ? 'Conectada' : 'Servidor en mantenimiento - Base de datos no disponible'
     });
 });
+
+// app.listen(PORT, async () => {
+//     console.log(`LOCAL - Escuchando puerto ${PORT}`);
+// })
 
 export default app;

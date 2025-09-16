@@ -13,10 +13,15 @@ import cors from 'cors';
 import path from 'path';
 
 const app = express();
-
 const PORT = process.env.PORT ?? 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: '*', // Permite todos los orígenes
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true // Si necesitas cookies/auth
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use('/public', express.static(path.join(process.cwd(), 'public')));
@@ -27,16 +32,16 @@ app.use('/api/team', teamRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/negotiations', negotiationRoutes);
 
-app.listen(PORT, async () => {
-    console.log(`Escuchando puerto ${PORT}`);
-    try {
-        await sequelize.authenticate();
-        console.log('Conexión a la base de datos exitosa');
-    } catch (error) {
-        console.log('Error al conectar a la base de datos:', error);
-        // console.log('Error al conectar a la base de datos');
-    }
-})
+// app.listen(PORT, async () => {
+//     console.log(`LOCAL - Escuchando puerto ${PORT}`);
+//     try {
+//         await sequelize.authenticate();
+//         console.log('Conexión a la base de datos exitosa');
+//     } catch (error) {
+//         console.log('Error al conectar a la base de datos:', error);
+//         // console.log('Error al conectar a la base de datos');
+//     }
+// })
 
 app.get('/', (req, res) => {
     res.send({

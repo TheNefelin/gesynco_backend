@@ -1,5 +1,5 @@
-// import dotenv from 'dotenv';
-// dotenv.config(); // ⚠️ Esto no funciona en Vercel para .env locales
+import dotenv from 'dotenv';
+dotenv.config(); // ⚠️ Esto no funciona en Vercel para .env locales
 
 import express from 'express';
 import authRoutes from './routes/authRoutes.js';
@@ -35,16 +35,15 @@ app.get('/', (req, res) => {
             team: '/api/team',
             clients: '/api/clients',
             negotiations: '/api/negotiations'
-        },
-        database: isDatabaseConnected ? 'Conectada' : 'Desconectada'
+        }
     });
 });
 
-app.use('/api', authRoutes );
-app.use('/api/news', newsRoutes);
-app.use('/api/team', teamRoutes);
-app.use('/api/clients', clientRoutes);
-app.use('/api/negotiations', negotiationRoutes);
+// app.use('/api', authRoutes );
+// app.use('/api/news', newsRoutes);
+// app.use('/api/team', teamRoutes);
+// app.use('/api/clients', clientRoutes);
+// app.use('/api/negotiations', negotiationRoutes);
 
 // Manejo de conexión a la base de datos
 let isDatabaseConnected = false;
@@ -54,6 +53,13 @@ async function connectDatabase() {
     await sequelize.authenticate();
     console.log('Conexión a la base de datos exitosa');
     isDatabaseConnected = true;
+
+    app.use('/api', authRoutes );
+    app.use('/api/news', newsRoutes);
+    app.use('/api/team', teamRoutes);
+    app.use('/api/clients', clientRoutes);
+    app.use('/api/negotiations', negotiationRoutes);
+
   } catch (error) {
     console.error('Error al conectar a la base de datos:', error.message);
     isDatabaseConnected = false;
@@ -63,9 +69,9 @@ async function connectDatabase() {
 // Conectar a la base de datos al iniciar
 connectDatabase();
 
-// app.listen(PORT, async () => {
-//     console.log(`LOCAL - Escuchando puerto ${PORT}`);
-// })
+app.listen(PORT, async () => {
+    console.log(`LOCAL - Escuchando puerto ${PORT}`);
+})
 
-// Exportar la app sin app.listen() para Vercel
+// ⚠️ Exportar la app sin app.listen() para Vercel
 export default app;

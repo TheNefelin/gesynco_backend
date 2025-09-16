@@ -1,5 +1,5 @@
 // import dotenv from 'dotenv';
-// dotenv.config();
+// dotenv.config(); // ⚠️ Esto no funciona en Vercel para .env locales
 
 import express from 'express';
 import authRoutes from './routes/authRoutes.js';
@@ -26,6 +26,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use('/public', express.static(path.join(process.cwd(), 'public')));
 
+app.get('/', (req, res) => {
+    res.send({
+        message: 'Servidor Express con Sequelize está corriendo 🚀',
+        endpoints: {
+            auth: '/api',
+            news: '/api/news',
+            team: '/api/team',
+            clients: '/api/clients',
+            negotiations: '/api/negotiations'
+        },
+        database: isDatabaseConnected ? 'Conectada' : 'Desconectada'
+    });
+});
+
 app.use('/api', authRoutes );
 app.use('/api/news', newsRoutes);
 app.use('/api/team', teamRoutes);
@@ -49,22 +63,9 @@ async function connectDatabase() {
 // Conectar a la base de datos al iniciar
 connectDatabase();
 
-app.get('/', (req, res) => {
-    res.send({
-        message: 'Servidor Express con Sequelize está corriendo 🚀',
-        endpoints: {
-            auth: '/api',
-            news: '/api/news',
-            team: '/api/team',
-            clients: '/api/clients',
-            negotiations: '/api/negotiations'
-        },
-        database: isDatabaseConnected ? 'Conectada' : 'Servidor en mantenimiento - Base de datos no disponible'
-    });
-});
-
 // app.listen(PORT, async () => {
 //     console.log(`LOCAL - Escuchando puerto ${PORT}`);
 // })
 
+// Exportar la app sin app.listen() para Vercel
 export default app;

@@ -32,6 +32,24 @@ app.use('/api/team', teamRoutes);
 app.use('/api/clients', clientRoutes);
 app.use('/api/negotiations', negotiationRoutes);
 
+// Manejo de conexión a la base de datos
+let isDatabaseConnected = false;
+
+async function connectDatabase() {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexión a la base de datos exitosa');
+    isDatabaseConnected = true;
+  } catch (error) {
+    console.error('Error al conectar a la base de datos:', error.message);
+    isDatabaseConnected = false;
+  }
+}
+
+// Conectar a la base de datos al iniciar
+connectDatabase();
+
+
 // app.listen(PORT, async () => {
 //     console.log(`LOCAL - Escuchando puerto ${PORT}`);
 //     try {
@@ -52,7 +70,8 @@ app.get('/', (req, res) => {
             team: '/api/team',
             clients: '/api/clients',
             negotiations: '/api/negotiations'
-        }
+        },
+        database: isDatabaseConnected ? 'Conectada' : 'Servidor en mantenimiento - Base de datos no disponible'
     });
 });
 

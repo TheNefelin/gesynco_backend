@@ -1,6 +1,7 @@
 // import dotenv from 'dotenv';
 // dotenv.config(); // ⚠️ Esto no funciona en Vercel para .env locales
 
+import pg from 'pg';
 import { Sequelize, DataTypes } from "sequelize";
 import { User } from './user.js';
 import { News } from './news.js';
@@ -18,6 +19,7 @@ const DB_ENGINE = process.env.DB_ENGINE ?? "postgres";
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
   dialect: DB_ENGINE,
+  dialectModule: pg,
   // port: DB_PORT,
   dialectOptions: {
     ssl: {

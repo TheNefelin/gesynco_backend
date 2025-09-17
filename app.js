@@ -1,6 +1,3 @@
-// import dotenv from 'dotenv';
-// dotenv.config(); // ⚠️ Esto no funciona en Vercel para .env locales
-
 import express from 'express';
 import authRoutes from './routes/authRoutes.js';
 import newsRoutes from './routes/newsRoutes.js';
@@ -13,7 +10,7 @@ import cors from 'cors';
 import path from 'path';
 
 const app = express();
-const PORT = process.env.PORT ?? 3000;
+const PORT = 3000;
 
 app.use(cors({
   origin: '*', // Permite todos los orígenes
@@ -26,11 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use('/public', express.static(path.join(process.cwd(), 'public')));
 
-// app.use('/api', authRoutes );
-// app.use('/api/news', newsRoutes);
-// app.use('/api/team', teamRoutes);
-// app.use('/api/clients', clientRoutes);
-// app.use('/api/negotiations', negotiationRoutes);
+app.use('/api', authRoutes );
+app.use('/api/news', newsRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/clients', clientRoutes);
+app.use('/api/negotiations', negotiationRoutes);
 
 // Manejo de conexión a la base de datos
 let isDatabaseConnected = false;
@@ -40,12 +37,6 @@ async function connectDatabase() {
     await sequelize.authenticate();
     console.log('Conexión a la base de datos exitosa');
     isDatabaseConnected = true;
-
-    app.use('/api', authRoutes );
-    app.use('/api/news', newsRoutes);
-    app.use('/api/team', teamRoutes);
-    app.use('/api/clients', clientRoutes);
-    app.use('/api/negotiations', negotiationRoutes);
   } catch (error) {
     console.error('Error al conectar a la base de datos:', error.message);
     isDatabaseConnected = false;

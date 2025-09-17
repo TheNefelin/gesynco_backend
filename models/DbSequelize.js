@@ -18,7 +18,7 @@ const DB_ENGINE = process.env.DB_ENGINE ?? "postgres";
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
   dialect: DB_ENGINE,
-  port: DB_PORT,
+  // port: DB_PORT,
   dialectOptions: {
     ssl: {
       require: true,
